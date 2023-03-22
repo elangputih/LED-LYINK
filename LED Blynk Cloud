@@ -1,0 +1,46 @@
+//* Basit Abdul *//
+
+#define BLYNK_TEMPLATE_ID "TMPLbC5k4K0m"
+#define BLYNK_TEMPLATE_NAME "BUTTUN LED BLYNK"
+#define BLYNK_AUTH_TOKEN "emP4ef-5EZU0kAqr8y97rMHv-iO0wYwf"
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+
+char auth[] = "emP4ef-5EZU0kAqr8y97rMHv-iO0wYwf";
+char ssid[] = "Wokwi-GUEST";
+char pass[] = "";
+
+BlynkTimer timer;
+
+#define LED 18
+int SW_state = 0; //kondisi lampu mati
+
+BLYNK_WRITE (V0)
+{
+  SW_state = param.asInt();
+  if(SW_state == 1){
+    digitalWrite(LED, HIGH);
+    Serial.println("LED ON");
+    Blynk.virtualWrite(V0, HIGH);
+  }else{
+    digitalWrite(LED, LOW);
+    Serial.println("LED OFF");
+    Blynk.virtualWrite(V0, LOW);
+  }
+}
+
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  pinMode(LED, OUTPUT);
+  Blynk.begin(auth, ssid, pass);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  Blynk.run();
+  timer.run();
+}
